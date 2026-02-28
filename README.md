@@ -1,60 +1,60 @@
 # google-tasks-mcp
 
-MCP server for Google Tasks API. Дозволяє будь-якому AI-агенту (Claude, Cursor, та ін.) читати, створювати, оновлювати та видаляти задачі через Google Tasks.
+MCP server for the Google Tasks API. It allows any AI agent (Claude, Cursor, and others) to read, create, update, and delete tasks via Google Tasks.
 
 ## Tools
 
-| Tool | Що робить |
-|------|-----------|
-| `list_task_lists` | Список усіх task lists |
-| `list_tasks` | Задачі зі списку (фільтри: дата, статус) |
-| `get_task` | Одна задача за ID |
-| `create_task` | Створити задачу (title, notes, due, parent) |
-| `update_task` | Оновити будь-яке поле |
-| `complete_task` | Позначити як виконану |
-| `delete_task` | Видалити назавжди |
-| `move_task` | Перемістити / змінити порядок |
+| Tool | What it does |
+|------|--------------|
+| `list_task_lists` | Lists all task lists |
+| `list_tasks` | Lists tasks from a list (filters: date, status) |
+| `get_task` | Returns a single task by ID |
+| `create_task` | Creates a task (`title`, `notes`, `due`, `parent`) |
+| `update_task` | Updates any task field |
+| `complete_task` | Marks a task as completed |
+| `delete_task` | Permanently deletes a task |
+| `move_task` | Moves/reorders a task |
 
 ---
 
-## Setup (один раз)
+## Setup (one-time)
 
 ### 1. Google Cloud Console
 
-1. Перейди на [console.cloud.google.com](https://console.cloud.google.com/)
-2. **Створи проєкт** (або вибери існуючий)
-3. Перейди в **APIs & Services → Library** → знайди **"Tasks API"** → Enable
-4. Перейди в **APIs & Services → Credentials**
-5. **Create Credentials → OAuth client ID**
+1. Go to [console.cloud.google.com](https://console.cloud.google.com/)
+2. **Create a project** (or select an existing one)
+3. Open **APIs & Services -> Library** -> find **"Tasks API"** -> Enable
+4. Open **APIs & Services -> Credentials**
+5. **Create Credentials -> OAuth client ID**
    - Application type: **Desktop app**
    - Name: `google-tasks-mcp`
-6. Завантаж JSON → перейменуй у `.credentials.json` → поклади в корінь проєкту
+6. Download the JSON file -> rename it to `.credentials.json` -> place it in the project root
 
-### 2. Встановити залежності
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Авторизація (один раз)
+### 3. Authorize (one-time)
 
 ```bash
 npm run auth
 ```
 
-Відкриється браузер → дозволи Google → токени збережуться у `.tokens.json`.
-Після цього авторизація не потрібна — токени оновлюються автоматично.
+A browser window will open -> approve Google access -> tokens will be saved to `.tokens.json`.
+After this, re-authorization is not required because tokens are refreshed automatically.
 
 ---
 
-## Підключення до Claude Desktop
+## Connect to Claude Desktop
 
-Відкрий `claude_desktop_config.json`:
+Open `claude_desktop_config.json`:
 
 - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-Додай:
+Add:
 
 ```json
 {
@@ -67,17 +67,17 @@ npm run auth
 }
 ```
 
-Перезапусти Claude Desktop → в інтерфейсі з'являться нові tools.
+Restart Claude Desktop -> new tools will appear in the interface.
 
-## Підключення до Claude Code
+## Connect to Claude Code
 
 ```bash
 claude mcp add google-tasks -- node /ABSOLUTE/PATH/TO/google-tasks-mcp/src/index.js
 ```
 
-## Підключення до Cursor / Windsurf / інших агентів
+## Connect to Cursor / Windsurf / other agents
 
-Будь-який агент, що підтримує MCP (stdio transport):
+Any agent that supports MCP (stdio transport):
 
 ```json
 {
@@ -92,18 +92,18 @@ claude mcp add google-tasks -- node /ABSOLUTE/PATH/TO/google-tasks-mcp/src/index
 
 ---
 
-## Приклади запитів агенту
+## Example prompts for your agent
 
 ```
-"Покажи всі мої задачі на цей тиждень"
-"Створи задачу 'Зробити PR' з дедлайном 2026-03-05"
-"Позначи задачу X як виконану"
-"Перемісти задачу Y на початок списку"
+"Show all my tasks for this week"
+"Create a task 'Open PR' with deadline 2026-03-05"
+"Mark task X as completed"
+"Move task Y to the top of the list"
 ```
 
 ---
 
-## Структура проєкту
+## Project structure
 
 ```
 google-tasks-mcp/
@@ -111,7 +111,7 @@ google-tasks-mcp/
 │   ├── index.js          — MCP server (tools + handlers)
 │   ├── auth.js           — OAuth2 one-time setup
 │   └── tasks-api.js      — Google Tasks API wrapper
-├── .credentials.json     — (gitignored) твої OAuth credentials
+├── .credentials.json     — (gitignored) your OAuth credentials
 ├── .tokens.json          — (gitignored) access + refresh tokens
 ├── .credentials.example.json
 ├── .gitignore
@@ -120,5 +120,5 @@ google-tasks-mcp/
 
 ## Security
 
-- `.credentials.json` і `.tokens.json` — **ніколи не комітити** (вже в `.gitignore`)
-- Токени оновлюються автоматично через `googleapis` OAuth2 client
+- `.credentials.json` and `.tokens.json` must **never be committed** (already in `.gitignore`)
+- Tokens are refreshed automatically via the `googleapis` OAuth2 client
