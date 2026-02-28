@@ -1,0 +1,1 @@
+{"name":"google-tasks-mcp","version":"1.0.0","type":"module","scripts":{"start":"node src/index.js","auth":"node src/auth.js"},"dependencies":{"@modelcontextprotocol/sdk":"^1.12.0","googleapis":"^144.0.0","open":"^10.1.0"}}
